@@ -1,0 +1,26 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\begin{document}
+
+Let there be $N$ players and let $C$ be the set of classes. Let $x_{i, c}$ be the indicator variable indicating whether the $i$th player in class $c\in C$ is included or not. Let $p_{i, c}$ be the prices of the players, and let $v_{i,c}$ be the values of the players.\\
+
+Maximize $\sum_i \sum_{c\in C} x_{i, c} v_{i, c}$ under the following constraints:
+
+\begin{align*}
+\sum_i \sum_{c\in C} x_{i, c} &= 8 \hspace{2em}\textrm{(choose exactly 8 players)}\\
+\sum_i \sum_{c\in C} x_{i, c} p_{i, c} &\leq 50000 \hspace{2em}\textrm{(salary constraint)}\\
+1 &\leq \sum_i x_{i, 1} \leq 2\\
+1 &\leq \sum_i x_{i, 2} \leq 2\\
+1 &\leq \sum_i x_{i, 3} \leq 2\\
+1 &\leq \sum_i x_{i, 4} \leq 2\\
+1 &\leq \sum_i x_{i, 5} \leq 2\\
+4 &\leq \sum_i \sum_{c\in\{1,2,5\}} x_{i, c} \leq 5\\
+4 &\leq \sum_i \sum_{c\in\{3,4,5\}} x_{i, c} \leq 5\\
+\end{align*}
+\end{document}
