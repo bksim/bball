@@ -1,0 +1,51 @@
+Basketball Data SQL Schema
+
+create table games 
+{
+    game_id 
+    date
+    home_team
+    visiting_team
+    home_score
+    visiting_score
+}
+
+
+create table players
+{
+    player_id
+    name
+    position
+    team_id
+    height
+    weight
+    PER
+    // any other stuff you would like
+}
+
+create table stats (naming?)
+{
+    game_id
+    player_id
+    min
+    fpm
+    fga
+    fg_pct
+    fg3m
+    fg3a
+    fg3_pct
+    ftm
+    fta
+    ft_pct
+    oreb
+    dreb
+    reb
+    ast
+    stl
+    blk
+    to
+    pf
+    pts
+    plus_minus
+}
+
