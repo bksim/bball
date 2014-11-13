@@ -1,0 +1,21 @@
+Thanks for responding. I know you can't just give up your model, and I definitely don't want that. Just trying to make sure I understand what I'm looking at. Is the general thought process something like what follows?
+
+So let's you expect LeBron to score 1.65 fantasy points per possession on average.
+
+The game's O/U is approximately 203 which happens to be equal to the combined Off Efficiency of New Orleans (100.8) and Cleveland (102.1). In that case, we would expect a normal amount of possessions. So for the Cavs that will be 93.3. LeBron's USG% is 28.9% this year, so he will use approximately 27 possessions. So you project him to score 27*1.65 = 44.55 fantasy points.
+
+Now, his fantasy points per possession has some standard deviation, and given that standard deviation you can calculate how often he will score 20 fantasy points, 30 points, 50 points, 60 points, etc. And then based on his dollar cost you can figure out how often he will reach a certain value.
+
+Sorry, this is super long winded... I'm just feeling overwhelmed by all the analysis going into constructing these teams, and I want to make sure I have an idea of what's going on.
+
+
+
+----
+
+[–]JoshEngleman 2 points 21 hours ago 
+
+You basically laid that out perfectly. I make tweaks to the usage rate, because that doesn't capture everything that people are doing in the fantasy sense, but everything you said is the path I take. Good work!
+
+
+
+I have projections based on the past 3 years of stats. I also grabbed projections from Fantasy Pros at the beginning of the season that carry a little bit of weight. It's basically just like you said, dividing his previous games by possessions, only I'm doing it for the past 3 years and weighing the results based on recency.
