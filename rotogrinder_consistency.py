@@ -8,7 +8,7 @@ result = json.load(result)
 players = result['data']
 fields = ['player', 'team', 'pos', 'salary', 'opp', 'gp', 'fppg', 'fpmax',
           'fpmin', 'floor', 'ceil', '%3x', '%4x', '%5x', '%6x']
-with open('season_rotogrinders_consistency2.csv', 'w') as csvfile:
+with open('rotogrinders_data/season_rotogrinders_consistency.csv', 'wb') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(fields)
     for player in players:
@@ -20,7 +20,7 @@ with open('season_rotogrinders_consistency2.csv', 'w') as csvfile:
 
 result = br.open('https://rotogrinders.com/game-stats/nba/consistency.json?site=draftkings&range=3weeks')
 result = json.load(result)
-with open('3weeks_rotogrinders_consistency.csv', 'w') as csvfile:
+with open('rotogrinders_data/3weeks_rotogrinders_consistency.csv', 'wb') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(fields)
     for player in players:
