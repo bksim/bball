@@ -1,10 +1,6 @@
-==Daily pipeline==
+## Daily pipeline
 
-1. In `model.ipynb` run
-
-`data_getters.download_gamelog_jsons(2014,'boxscores/2014',start_game=X, end_game=1230)`
-
-where X is the first game that has not already been downloaded. The program will automatically stop once the last game that is available is downloaded.
+1. In `model.ipynb` run the code block containing `data_getters.download_gamelog_jsons(2014,'boxscores/2014',start_game=X, end_game=1230)` where X is the first game that has not already been downloaded. The program will automatically stop once the last game that is available is downloaded.
 
 2. Run the next two code blocks in `model.ipynb`, which load the Player class and two functions for loading JSON's and writing predictions.
 
