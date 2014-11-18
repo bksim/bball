@@ -1,0 +1,25 @@
+todo: regress a player into 'talent' and 'performance against defense'
+
+so regress
+
+player's FP
+vs
+opponent's FP given up for that position
+
+
+
+regress team's defense against types of points vs player's percentage of shots
+ie shots at rim/three pointers given up/etc
+
+
+
+check pace
+
+check team's off_rating def_rating
+
+
+
+TODO: 
+1) download all advanced boxscores
+2) regress opponent's def_rating with player's points. see if there's correlation
+

@@ -11,11 +11,17 @@ import csv
 
 # downloads game jsons from a given year to a given location
 # gets the games from start_game to end_game, inclusive
-def download_gamelog_jsons(year, location, start_game=1, end_game=1230):
+# type: normal for traditional box scores
+#       advanced for advanced box scores
+def download_gamelog_jsons(year, location, boxtype='normal', start_game=1, end_game=1230):
     y = year % 10
     for g in xrange(start_game, end_game+1):
         print g
-        url = 'http://stats.nba.com/stats/boxscore?GameID=0021' + str(y) + "%05d" % (g) + '&RangeType=0&StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0'
+        if boxtype == 'normal':
+            url = 'http://stats.nba.com/stats/boxscore?GameID=0021' + str(y) + "%05d" % (g) + '&RangeType=0&StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0'
+        elif boxtype == 'advanced':
+            url = 'http://stats.nba.com/stats/boxscoreadvanced?GameID=0021' + str(y) + "%05d" % (g) + '&RangeType=0&StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0'
+
         req = Request(url)
         try:
             response = urlopen(req)
