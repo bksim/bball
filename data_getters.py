@@ -3,6 +3,9 @@ from urllib2 import Request, urlopen, URLError
 import json
 import mechanize
 import csv
+import re
+import requests
+from bs4 import BeautifulSoup
 
 # Downloads boxscores from stats.nba.com. Boxscores come in JSON format.
 # GameID format is 0021##### - where the first digit after 0021 decides the year, 
@@ -72,3 +75,50 @@ def download_consistency_data(out_dir='rotogrinders_data'):
             for field in fields:
                 row.append(player[field])
             writer.writerow(row)
+
+# gets all game info in JSON format from a downloaded Lobby page.
+def get_all_ids(html_page, html_type='lobby'):
+    if html_type == 'lobby':
+        soup = BeautifulSoup(open(html_page))
+
+        matches = []
+        for scr in soup.select('script'):
+            if scr.string != None:
+                s = scr.string
+                if 'packagedContests' in s:
+                    jsontext = s.split('var packagedContests = [')[1] .split('];')[0]
+                    indiv = jsontext.split('},{')
+                    indiv[0] = indiv[0][1:]
+                    indiv[-1] = indiv[-1][0:-1]
+
+                    for m in indiv:
+                        matches.append(json.loads('{'+m+'}'))
+        return matches
+    else:
+        return None
+
+# downloads all match standing CSVs given the list ids into the dump directory
+#https://www.draftkings.com/contest/exportfullstandingscsv/2459960
+
+# this doesn't work yet, LOGIN WALL dammit
+def download_csv(dump_dir, ids):
+    r = requests.get('https://www.draftkings.com/contest/exportfullstandingscsv/2459960')
+    print r.text
+    return
+
+
+if __name__ == "__main__":
+    d = 'draftkings scrapes/'
+    fn = '20141119_draftkings_nba_lobby.htm'
+    html_page = d + fn
+    matches = get_all_ids(html_page)
+
+    with open(d + fn.split('.')[0] + '_results.txt', 'wb') as f:
+        for m in matches:
+            f.write(m['n'] + " /// " + str(m['id']) + '\n')
+    
+    #for m in matches:
+    #   print m['n'] + " /// " + str(m['id'])
+
+    #download_csv(None, None)
+
