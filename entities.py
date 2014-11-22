@@ -169,22 +169,48 @@ class Game:
                         u'PTS_OT9', 
                         u'PTS_OT10', 
                         u'PTS']
+        self.adv_headers = [
+                "GAME_ID", 
+                "TEAM_ID", 
+                "TEAM_NAME", 
+                "TEAM_ABBREVIATION", 
+                "TEAM_CITY", 
+                "MIN", 
+                "OFF_RATING", 
+                "DEF_RATING", 
+                "NET_RATING", 
+                "AST_PCT", 
+                "AST_TOV", 
+                "AST_RATIO", 
+                "OREB_PCT", 
+                "DREB_PCT", 
+                "REB_PCT", 
+                "TM_TOV_PCT", 
+                "EFG_PCT", 
+                "TS_PCT", 
+                "USG_PCT", 
+                "PACE", 
+                "PIE"]
 
     def add_data_from_boxscore(self, data, home_id, away_id, boxtype):
-        if boxtype == 'advanced':
-            assert len(data[0]) == len(self.headers)
-            assert len(data[1]) == len(self.headers)
-            index = 0
-            if data[0][self.headers.index('TEAM_ID')] == home_id:
-                home_index = 0
-                away_index = 1
-            elif data[0][self.headers.index('TEAM_ID')] == away_id:
-                away_index = 0
-                home_index = 1
-            for header in self.headers:
-                self.away_info[header] = data[away_index][index]
-                self.home_info[header] = data[home_index][index]
-                index += 1
+        if boxtype == 'normal':
+            headertype = self.headers
+        elif boxtype == 'advanced':
+            headertype = self.adv_headers
+
+        assert len(data[0]) == len(headertype)
+        assert len(data[1]) == len(headertype)
+        index = 0
+        if data[0][headertype.index('TEAM_ID')] == home_id:
+            home_index = 0
+            away_index = 1
+        elif data[0][headertype.index('TEAM_ID')] == away_id:
+            away_index = 0
+            home_index = 1
+        for header in headertype:
+            self.away_info[header] = data[away_index][index]
+            self.home_info[header] = data[home_index][index]
+            index += 1
     
     def get_home_id(self):
         return self.home_info['TEAM_ID']

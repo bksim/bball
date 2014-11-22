@@ -47,6 +47,8 @@ def load_jsons_to_memory(box_score_directory, end_date):
                 game_summary = t['resultSets'][names.index('GameSummary')]['rowSet'][0]
                 temp_game = Game()
                 temp_game.add_data_from_boxscore(t['resultSets'][names.index('LineScore')]['rowSet'], 
+                                                 game_summary[6], game_summary[7], 'normal')
+                temp_game.add_data_from_boxscore(t['resultSets'][names.index('sqlTeamsAdvanced')]['rowSet'], 
                                                  game_summary[6], game_summary[7], 'advanced')
                 games.append(temp_game)
     return players, games
