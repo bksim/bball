@@ -18,7 +18,7 @@
 
 ### Meta-analysis
 
-1. Go to DraftKings lobby and save the lobby source code as "draftkings scrapes/YYYYMMDD_draftkings_nba_lobby.htm".
+1. Go to DraftKings lobby and save the lobby source code as `draftkings scrapes/YYYYMMDD_draftkings_nba_lobby.htm`.
 
 2. Go to the main function in data_getters.py, change the variable `fn` to the name of the downloaded `.htm` file, and run, generating a list of all games and their ID's.
 
