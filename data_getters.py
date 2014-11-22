@@ -143,11 +143,12 @@ def write_jsons_to_excel(excel_filename, json_directory):
 #print def_ratings
 #print off_ratings
 def get_def_ratings(year):
-    teams = ['ATL','BOS','BRK','CHA','CHI','CLE','DAL','DEN','DET','GSW','HOU','IND','LAC','LAL','MEM',
-         'MIA','MIL','MIN','NOP','OKC','ORL','PHI','PHO','POR','SAC','SAS','TOR','UTA','WAS']
+    teams = ['ATL','BOS','BRK','CHO','CHI','CLE','DAL','DEN','DET','GSW','HOU','IND','LAC','LAL','MEM',
+         'MIA','MIL','MIN','NOP','NYK','OKC','ORL','PHI','PHO','POR','SAC','SAS','TOR','UTA','WAS']
     def_ratings = {}
     off_ratings = {}
     for team in teams:
+        print team
         team_url = 'http://www.basketball-reference.com/teams/' + team + '/'+ str(year) + '.html'
         req = Request(team_url)
         try:

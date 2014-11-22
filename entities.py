@@ -86,8 +86,8 @@ class Player:
                         return False
                     v = self.info[s][game_number]
                     if v == None:
-                        print "Error: " + self.info['COMMENT'][game_number]
-                        return
+                        #print "Error: " + self.info['COMMENT'][game_number]
+                        return None
                 fp += v * w
                 if s in ['PTS', 'REB', 'AST', 'BLK', 'STL']:
                     if v >= 10.0:
@@ -109,8 +109,8 @@ class Player:
                         return False
                     v = self.info[s][game_number]
                     if v == None:
-                        print 'Error: ' + self.info['COMMENT'][game_number]
-                        return
+                        #print 'Error: ' + self.info['COMMENT'][game_number]
+                        return None
                 fp += v * w
             return fp if not np.isnan(fp) else 0.0
         else:
@@ -185,7 +185,22 @@ class Game:
                 self.away_info[header] = data[away_index][index]
                 self.home_info[header] = data[home_index][index]
                 index += 1
-                
+    
+    def get_home_id(self):
+        return self.home_info['TEAM_ID']
+
+    def get_away_id(self):
+        return self.away_info['TEAM_ID']
+
+    def get_home_abb(self):
+        return self.home_info['TEAM_ABBREVIATION']
+
+    def get_away_abb(self):
+        return self.away_info['TEAM_ABBREVIATION']
+
+    def get_game_id(self):
+        return self.home_info['GAME_ID']
+
     def __repr__(self):
         date = self.home_info['GAME_DATE_EST'].split('T')[0]
         return date + "/Home: " + str(self.home_info['TEAM_ABBREVIATION']) + " " + str(self.home_info['PTS']) + ", Away: " + str(self.away_info['TEAM_ABBREVIATION']) + " " + str(self.away_info['PTS'])
