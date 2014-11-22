@@ -97,15 +97,79 @@ def get_all_ids(html_page, html_type='lobby'):
     else:
         return None
 
-# downloads all match standing CSVs given the list ids into the dump directory
-#https://www.draftkings.com/contest/exportfullstandingscsv/2459960
 
-# this doesn't work yet, LOGIN WALL dammit
-def download_csv(dump_dir, ids):
-    r = requests.get('https://www.draftkings.com/contest/exportfullstandingscsv/2459960')
-    print r.text
-    return
+# write to excel sheet for donkjeff
+# usage: write_jsons_to_excel('excel_gamedata_2014.xls', 'boxscores/2014')
+import xlwt
+def write_jsons_to_excel(excel_filename, json_directory):
+    w = xlwt.Workbook()
+    counter = 0
+    for fn in os.listdir(json_directory):
+        cursheet = w.add_sheet(fn.split(".")[0])
+        with open(os.path.join(json_directory, fn)) as f:
+            t = json.load(f)
+            cursheet.write(0,0,'Date')
+            cursheet.write(0,1,'Home Team')
+            cursheet.write(0,2,'Home Score')
+            cursheet.write(0,3,'Visiting Team')
+            cursheet.write(0,4,'Visiting Score')
+            home_id = t['resultSets'][0]['rowSet'][0][6]
+            away_id = t['resultSets'][0]['rowSet'][0][7]
+            
+            idmap = {}
+            idmap[t['resultSets'][1]['rowSet'][0][3]] = (t['resultSets'][1]['rowSet'][0][4],t['resultSets'][1]['rowSet'][0][21])
+            idmap[t['resultSets'][1]['rowSet'][1][3]] = (t['resultSets'][1]['rowSet'][1][4],t['resultSets'][1]['rowSet'][1][21])
+            
+            # print metadata info
+            cursheet.write(1,0,t['resultSets'][0]['rowSet'][0][0]) #date
+            cursheet.write(1,1,idmap[home_id][0]) #home team
+            cursheet.write(1,2,idmap[home_id][1])
+            cursheet.write(1,3,idmap[away_id][0]) #visiting team
+            cursheet.write(1,4,idmap[away_id][1])
+    
+            # print player stats
+            for i in range(len(t['resultSets'][4]['headers'])):
+                cursheet.write(2,i,t['resultSets'][4]['headers'][i])
+            for j in range(len(t['resultSets'][4]['rowSet'])):
+                for k in range(len(t['resultSets'][4]['rowSet'][j])):
+                    cursheet.write(3+j, k, t['resultSets'][4]['rowSet'][j][k])
+        
+    w.save(excel_filename)
 
+
+# scrape offensive and def ratings from basketball-reference
+# usage: year = 2014 #2013-2014
+#def_ratings, off_ratings = get_def_ratings(teams, year) # may take a bit to hit all the teams
+#print def_ratings
+#print off_ratings
+def get_def_ratings(year):
+    teams = ['ATL','BOS','BRK','CHA','CHI','CLE','DAL','DEN','DET','GSW','HOU','IND','LAC','LAL','MEM',
+         'MIA','MIL','MIN','NOP','OKC','ORL','PHI','PHO','POR','SAC','SAS','TOR','UTA','WAS']
+    def_ratings = {}
+    off_ratings = {}
+    for team in teams:
+        team_url = 'http://www.basketball-reference.com/teams/' + team + '/'+ str(year) + '.html'
+        req = Request(team_url)
+        try:
+            response = urlopen(req)
+        except URLError as e:
+            if hasattr(e, 'reason'):
+                print 'We failed to reach a server.'
+                print 'Reason: ', e.reason
+            elif hasattr(e, 'code'):
+                print 'The server couldn\'t fulfill the request.'
+                print 'Error code: ', e.code
+        else:
+            # everything is fine
+            html_page = response.read()
+            search = "Def Rtg</span></a>: "
+            loc = html_page.find(search)
+            def_ratings[team] = float(html_page[loc+len(search): loc+len(search)+5].rstrip(" "))
+            
+            search = "Off Rtg</span></a>: "
+            loc = html_page.find(search)
+            off_ratings[team] = float(html_page[loc+len(search): loc+len(search)+5].rstrip(" "))
+    return def_ratings, off_ratings
 
 if __name__ == "__main__":
     d = 'draftkings scrapes/'
