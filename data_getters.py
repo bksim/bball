@@ -174,7 +174,7 @@ def get_def_ratings(year):
 
 if __name__ == "__main__":
     d = 'draftkings scrapes/'
-    fn = '20141119_draftkings_nba_lobby.htm'
+    fn = '20141122_draftkings_nba_lobby.htm'
     html_page = d + fn
     matches = get_all_ids(html_page)
 
