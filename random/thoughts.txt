@@ -19,3 +19,26 @@ You basically laid that out perfectly. I make tweaks to the usage rate, because 
 
 
 I have projections based on the past 3 years of stats. I also grabbed projections from Fantasy Pros at the beginning of the season that carry a little bit of weight. It's basically just like you said, dividing his previous games by possessions, only I'm doing it for the past 3 years and weighing the results based on recency.
+
+====
+
+brandon's thoughts
+
+
+This doesn't seem to take into account usage%; why don't you use the following procedure?
+
+Fantasy points per possession * (usg% * pace) = predicted FP
+
+where (usg% * pace) = number of possessions a player will actually use.
+
+If you try to use that metric, how does that reconcile with your estimate of Dirk at 0.55 FPPP? Then, he might be projected to have:
+0.55 FPPP * (26.6% * 92.2) = 13.48 FP, which is clearly way too low.
+
+It seems like in calculating your FPP number, you're doing something like:
+
+Fantasy points scored / (pace * (minutes played / 48)) over historical data
+
+Why use that formula instead of
+
+Fantasy points scored / (usage rate * pace of team)?
+

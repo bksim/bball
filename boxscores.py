@@ -52,14 +52,3 @@ def load_jsons_to_memory(box_score_directory, end_date):
                                                  game_summary[6], game_summary[7], 'advanced')
                 games.append(temp_game)
     return players, games
-
-# write predictions to excel sheet
-def write_predictions(player_data, excel_fn, dfs_site):
-    predictions = {}
-    for p in player_data:
-        predictions[p.get_name()] = p.calculate_fp(game_number="predict", site=dfs_site)
-    with open(excel_fn, 'wb') as f:
-        writer = csv.writer(f)
-        for k, v in predictions.iteritems():
-            writer.writerow([k, v])
-    return True
