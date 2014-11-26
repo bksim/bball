@@ -16,6 +16,7 @@ class Player:
                    u'OREB', u'DREB', u'REB', u'AST', 
                    u'STL', u'BLK', u'TO', u'PF', u'PTS', 
                    u'PLUS_MINUS']
+                   
         self.adv_headers = [
                 "GAME_ID", 
                 "TEAM_ID", 
@@ -46,6 +47,8 @@ class Player:
             self.info[h] = []
         for h in self.adv_headers:
             self.adv_info[h] = []
+
+        self.cost = None
     
     # adds game info from boxscore data
     def add_game_from_boxscore(self, data, boxtype):
@@ -60,7 +63,11 @@ class Player:
                 self.info[this_headers[i]].append(data[i])
             elif boxtype == 'advanced':
                 self.adv_info[this_headers[i]].append(data[i])
-    
+
+    #add the cost of the player from DK 
+    def add_cost_from_DK(self, data):
+        pass
+
     # predict the given stat:
     # [PTS, FG3M, REB, AST, STL, BLK, TO]
     # 
@@ -69,6 +76,33 @@ class Player:
         # note: if a player is missing games, it still calculates weights (see is_na flag in documentation)
         return float(pd.stats.moments.ewma(pd.Series(self.info[stat]), span=6).tail(1))
     
+    def fppp_stats(self):
+        historical_fp = []
+        for i in range(len(self.info['GAME_ID'])):
+            historical_fp.append(self.calculate_fp(game_number=i))
+        fppp = np.divide(historical, self.adv_info['PACE'])
+        return np.average(fppp), np.std(fppp)
+
+    def minutes_stats(self):
+        return np.average(self.info['MIN']), np.std(self.info['MIN'])
+
+    def possessions_model(self):
+        num_iters = 300000
+        results = []
+        average_fppp, std_fppp = self.fppp_stats()
+        average_min, std_min = self.minutes_stats()
+
+        # TODO: Project pace using Vegas Over Unders!!!!!
+        pace = 95 
+        for i in range(num_iters):
+            fppp = np.random.normal(average_fppp, std_fppp)
+            minutes = np.random.normal(average_min, std_min)
+            results.append(((float(minutes)/48.0) * pace) * fppp)
+
+
+
+        #implement simulator here
+
     # calculates the number of fantasy points scored in the players nth game
     # where n = game_number
     # if game_number = 'predict' then it predicts using all the information so far
