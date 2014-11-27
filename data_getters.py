@@ -108,7 +108,7 @@ def get_all_ids(html_page, html_type='lobby'):
 #def_ratings, off_ratings = get_def_ratings(teams, year) # may take a bit to hit all the teams
 #print def_ratings
 #print off_ratings
-def get_def_ratings(year):
+def get_ratings(year, excel_fn):
     teams = ['ATL','BOS','BRK','CHO','CHI','CLE','DAL','DEN','DET','GSW','HOU','IND','LAC','LAL','MEM',
          'MIA','MIL','MIN','NOP','NYK','OKC','ORL','PHI','PHO','POR','SAC','SAS','TOR','UTA','WAS']
     def_ratings = {}
@@ -136,8 +136,74 @@ def get_def_ratings(year):
             search = "Off Rtg</span></a>: "
             loc = html_page.find(search)
             off_ratings[team] = float(html_page[loc+len(search): loc+len(search)+5].rstrip(" "))
+
+    def_ratings['CHA'] = def_ratings['CHO']
+    def_ratings['PHX'] = def_ratings['PHO']
+    def_ratings['BKN'] = def_ratings['BRK']
+    off_ratings['CHA'] = off_ratings['CHO']
+    off_ratings['PHX'] = off_ratings['PHO']
+    off_ratings['BKN'] = off_ratings['BRK']
+
+    # write to excel sheet
+    with open(excel_fn, 'wb') as csvfile:
+        writer = csv.writer(csvfile)
+        for k in def_ratings:
+            writer.writerow([k, def_ratings[k], off_ratings[k]])
+
     return def_ratings, off_ratings
 
+# downloads vegas lines from covers.com and writes to file specified
+def get_vegas_lines(excel_fn, site='covers'):
+    url = 'http://www.covers.com/odds/basketball/nba-spreads.aspx'
+
+    req = Request(url)
+    try:
+        response = urlopen(req)
+    except URLError as e:
+        if hasattr(e, 'reason'):
+            print 'We failed to reach a server.'
+            print 'Reason: ', e.reason
+        elif hasattr(e, 'code'):
+            print 'The server couldn\'t fulfill the request.'
+            print 'Error code: ', e.code
+    else:
+        # everything is fine
+        html_page = response.read()
+        soup = BeautifulSoup(html_page)
+        lines = soup.find_all('tr', 'bg_row')
+        line_info = {}
+        for line in lines:
+            teams = line.find_all('strong')
+            teamstring = teams[0].contents[0]+teams[1].contents[0]
+            temp = line.find_all('td', 'covers_top')[0]
+            ou = temp.find_all('div','line_top')[0].contents[0].lstrip().rstrip()
+            spread = temp.find_all('div','covers_bottom')[0].contents[0].lstrip().rstrip()
+            line_info[teamstring] = [float(ou), float(spread)]
+        with open(excel_fn, 'wb') as csvfile:
+            writer = csv.writer(csvfile)
+            for k, v in line_info.iteritems():
+                writer.writerow([k, v[0], v[1]])
+    return line_info
+
+# reads a csv written by get_vegas_lines or get_ratings
+def read_from_file(datatype, fn):
+    if datatype == 'ratings':
+        def_ratings = {}
+        off_ratings = {}
+        with open(fn, 'r') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                def_ratings[row[0]] = float(row[1])
+                off_ratings[row[0]] = float(row[2])
+        return def_ratings, off_ratings
+
+    if datatype == 'vegas_lines':
+        vegas_lines = {}
+        with open(fn, 'r') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                vegas_lines[row[0]] = [float(row[1]), float(row[2])]
+        return vegas_lines
 
 # write to excel sheet for donkjeff
 # usage: write_jsons_to_excel('excel_gamedata_2014.xls', 'boxscores/2014')
@@ -272,41 +338,6 @@ def cutoffs_stats(ids, contests):
         average_cutoffs[k] = np.average(np.array(cutoffs[k]))
         median_cutoffs[k] = np.median(np.array(cutoffs[k]))
     return average_cutoffs, median_cutoffs
-    
-
-def get_vegas_lines(excel_fn, site='covers'):
-    url = 'http://www.covers.com/odds/basketball/nba-spreads.aspx'
-
-    req = Request(url)
-    try:
-        response = urlopen(req)
-    except URLError as e:
-        if hasattr(e, 'reason'):
-            print 'We failed to reach a server.'
-            print 'Reason: ', e.reason
-        elif hasattr(e, 'code'):
-            print 'The server couldn\'t fulfill the request.'
-            print 'Error code: ', e.code
-    else:
-        # everything is fine
-        html_page = response.read()
-        soup = BeautifulSoup(html_page)
-        lines = soup.find_all('tr', 'bg_row')
-        line_info = {}
-        for line in lines:
-            teams = line.find_all('strong')
-            teamstring = teams[0].contents[0]+teams[1].contents[0]
-            temp = line.find_all('td', 'covers_top')[0]
-            ou = temp.find_all('div','line_top')[0].contents[0].lstrip().rstrip()
-            spread = temp.find_all('div','covers_bottom')[0].contents[0].lstrip().rstrip()
-            line_info[teamstring] = [float(ou), float(spread)]
-        with open(excel_fn, 'wb') as csvfile:
-            writer = csv.writer(csvfile)
-            for k, v in line_info.iteritems():
-                writer.writerow([k, v[0], v[1]])
-    return line_info
-
-
 
 if __name__ == "__main__":
     d = 'draftkings scrapes/'
