@@ -274,10 +274,41 @@ def cutoffs_stats(ids, contests):
     return average_cutoffs, median_cutoffs
     
 
+def get_vegas_lines(excel_fn, site='covers'):
+    url = 'http://www.covers.com/odds/basketball/nba-spreads.aspx'
+
+    req = Request(url)
+    try:
+        response = urlopen(req)
+    except URLError as e:
+        if hasattr(e, 'reason'):
+            print 'We failed to reach a server.'
+            print 'Reason: ', e.reason
+        elif hasattr(e, 'code'):
+            print 'The server couldn\'t fulfill the request.'
+            print 'Error code: ', e.code
+    else:
+        # everything is fine
+        html_page = response.read()
+        soup = BeautifulSoup(html_page)
+        lines = soup.find_all('tr', 'bg_row')
+        line_info = {}
+        for line in lines:
+            teams = line.find_all('strong')
+            teamstring = teams[0].contents[0]+teams[1].contents[0]
+            temp = line.find_all('td', 'covers_top')[0]
+            ou = temp.find_all('div','line_top')[0].contents[0].lstrip().rstrip()
+            spread = temp.find_all('div','covers_bottom')[0].contents[0].lstrip().rstrip()
+            line_info[teamstring] = [float(ou), float(spread)]
+        with open(excel_fn, 'wb') as csvfile:
+            writer = csv.writer(csvfile)
+            for k, v in line_info.iteritems():
+                writer.writerow([k, v[0], v[1]])
+    return line_info
+
+
 
 if __name__ == "__main__":
-
-
     d = 'draftkings scrapes/'
     fn = '20141119_draftkings_nba_lobby.htm'
     html_page = d + fn
@@ -301,4 +332,3 @@ if __name__ == "__main__":
     #for m in matches:
     #   print m['n'] + " /// " + str(m['id'])
     download_csv(ids)
-

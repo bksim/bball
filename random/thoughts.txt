@@ -20,7 +20,7 @@ You basically laid that out perfectly. I make tweaks to the usage rate, because 
 
 I have projections based on the past 3 years of stats. I also grabbed projections from Fantasy Pros at the beginning of the season that carry a little bit of weight. It's basically just like you said, dividing his previous games by possessions, only I'm doing it for the past 3 years and weighing the results based on recency.
 
-====
+=====
 
 brandon's thoughts
 
@@ -42,3 +42,48 @@ Why use that formula instead of
 
 Fantasy points scored / (usage rate * pace of team)?
 
+=====
+
+(9:22:25 AM) Alex Wang: i was thinking about is like
+(9:22:43 AM) Alex Wang: vegas O/U projections
+(9:22:44 AM) Alex Wang: use
+(9:22:46 AM) Alex Wang: pace
+(9:22:52 AM) Alex Wang: but what else do they use
+(9:23:05 AM) Alex Wang: defense rtg?
+(9:23:10 AM) Alex Wang: like how ot quantify
+(9:23:17 AM) Alex Wang: that
+(9:23:22 AM) Alex Wang: okay what im trying to say is like
+(9:23:26 AM) Alex Wang: we basically wanted to
+(9:23:42 AM) Alex Wang: integrate the "O/U" effect
+(9:23:52 AM) Alex Wang: so to do that we broke it down to posessions and the minutes model like we have
+(9:23:54 AM) Alex Wang: but to further that
+(9:24:00 AM) Alex Wang: we would have to take into account a team's defense right?
+(9:25:50 AM) simpavid@gmail.com/3F4A89B8: hm
+(9:25:52 AM) simpavid@gmail.com/3F4A89B8: that sould be included
+(9:25:53 AM) simpavid@gmail.com/3F4A89B8: cus in the OU
+(9:25:56 AM) simpavid@gmail.com/3F4A89B8: vegas also has
+(9:25:57 AM) simpavid@gmail.com/3F4A89B8: like
+(9:26:00 AM) simpavid@gmail.com/3F4A89B8: how many points it exepcs
+(9:26:03 AM) simpavid@gmail.com/3F4A89B8: expects each team to score
+(9:26:09 AM) simpavid@gmail.com/3F4A89B8: so from that wecan decompose to pace of each team
+(9:26:12 AM) simpavid@gmail.com/3F4A89B8: ?
+(9:26:19 AM) simpavid@gmail.com/3F4A89B8: ie if vegas expects lakers-mem
+(9:26:20 AM) simpavid@gmail.com/3F4A89B8: to be like
+(9:26:24 AM) simpavid@gmail.com/3F4A89B8: lakers 95 -mem 105
+(9:26:29 AM) simpavid@gmail.com/3F4A89B8: then memphis will have higher "pace"
+(9:26:30 AM) simpavid@gmail.com/3F4A89B8: for the game
+(9:26:35 AM) simpavid@gmail.com/3F4A89B8: i mean technically theyll have th esame number of possessions but
+(9:26:41 AM) simpavid@gmail.com/3F4A89B8: b/c theyre expected to have more points 
+(9:26:57 AM) simpavid@gmail.com/3F4A89B8: the "pace" for memphis players will be higher?
+(9:27:02 AM) simpavid@gmail.com/3F4A89B8: and that will help take into acc the lakers shitty d
+(9:27:03 AM) simpavid@gmail.com/3F4A89B8: for example
+(9:27:36 AM) simpavid@gmail.com/3F4A89B8: wait how do we go from points (O/U) to possessions again?
+(9:27:52 AM) simpavid@gmail.com/3F4A89B8: uhh was that using offensive efficiency?
+(9:27:53 AM) simpavid@gmail.com/3F4A89B8: ohhhh ok
+(9:28:00 AM) simpavid@gmail.com/3F4A89B8: so we can use OFF/DEF ratings
+(9:28:07 AM) simpavid@gmail.com/3F4A89B8: which is pts scored/allowed per 100 possessions
+(9:28:12 AM) simpavid@gmail.com/3F4A89B8: to scale vegas O/U's to possessions
+(9:28:23 AM) simpavid@gmail.com/3F4A89B8: which will be pace
+(9:28:29 AM) simpavid@gmail.com/3F4A89B8: that incorporates the off/def
+(9:28:31 AM) simpavid@gmail.com/3F4A89B8: of a matchup
+(9:28:49 AM) Alex Wang: yeah
