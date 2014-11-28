@@ -1,5 +1,6 @@
 import subprocess, StringIO
 import csv
+import os
 
 # load data about salaries
 # fn: file with salaries
@@ -120,7 +121,10 @@ def run_optimization(fn, projections, adjustments, num_lineups):
         temp_fn = 'templpfile'
         with open(temp_fn, 'wb') as f:
             f.write(lp.getvalue())
-        cmd = "lp_solve " + temp_fn
+        if (os.name == 'posix'): #check if linux/unix
+            cmd = './lp_solve ' + temp_fn
+        else: #windows 
+            cmd = "lp_solve " + temp_fn
         val = subprocess.check_output(cmd, shell=True).split('\n')
         team = []
         pid_team = []
