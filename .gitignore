@@ -1,2 +1,6 @@
 boxscores/
 boxscores_advanced/
+*.pyc
+templpfile
+lp_solve_5.5.2.0_exe_win64/
+optimization_testing/

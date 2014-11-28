@@ -15,7 +15,7 @@ def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_rat
 			writer = csv.writer(f)
 			for k, v in predictions.iteritems():
 				writer.writerow([k, v])
-		return True
+		return predictions
 	elif model_type == "possessions":
 		assert dfs_site == "DraftKings"
 		for p in player_data:
@@ -25,7 +25,7 @@ def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_rat
 			writer = csv.writer(f)
 			for k, v in predictions.iteritems():
 				writer.writerow([k, v['predicted_fp'], v['predicted_sd']])
-		return True
+		return predictions
 
 # finish this function by finishing the lookup table
 def calculate_pace(team, vegas_lines, def_ratings, off_ratings):

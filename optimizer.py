@@ -1,94 +1,141 @@
-#!/usr/bin/python
-'''
-Simplest OpenOpt KSP example;
-requires FuncDesigner installed.
-For some solvers limitations on time, cputime, "enough" value, basic GUI features are available.
-See http://openopt.org/KSP for more details
-'''
-from openopt import *
+import subprocess, StringIO
 import csv
-from pprint import pprint
 
-
-def load_projections(projections_file):
-    projections = {}
-    with open(projections_file, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            projections[row[0]] = float(row[1])
-    return projections
-        
-
-def optimizer(projections=None, site="DraftKings"):
-
-    adjustments = {'Kevin Martin': 0.0, #injury
-                   'Derrick Rose': 0.0, #crap player
-                   'Stephen Curry': 0.0
-                  }
-
+# load data about salaries
+# fn: file with salaries
+# projections: model projections
+# adjustments: discretionary set of adjustments
+def load_data(fn, projections, adjustments):
     items = []
-    player_ids = {}
-
-    with open('DKSalaries_11272014.csv', 'r') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(fn) as f:
+        reader = csv.reader(f)
         index = 0
         for row in reader:
             if index != 0:
-                vals = { 
-                        'id': index-1,
+                vals = {
+                        'id': 'P' + str(index),
                         'PG': 1 if row[0] == 'PG' else 0,
                         'SG': 1 if row[0] == 'SG' else 0,
                         'SF': 1 if row[0] == 'SF' else 0,
                         'PF': 1 if row[0] == 'PF' else 0,
                         'C': 1 if row[0] == 'C' else 0,
+                        'position': row[0],
                         'name': row[1],
                         'salary': int(row[2]),
-                        'fpts': float(row[4]) if row[1] not in adjustments.keys() else adjustments[row[1]]
+                        'fpts': float(row[4]) if row[1] not in adjustments else adjustments[row[1]]
                         }
-                vals['PGSGC'] = vals['PG'] + vals['SG'] + vals['C']
-                vals['PFSFC'] = vals['PF'] + vals['SF'] + vals['C']
                 if projections != None:
-                    vals['fpts'] = projections[vals['name']]
+                    # adjustments take precedence over model
+                    if vals['name'] not in adjustments:
+                        # makes sure our model has a projection for the player before using it
+                        if vals['name'] in projections:
+                            vals['fpts'] = projections[vals['name']]
                 items.append(vals)
             index += 1
+    return items
+    
+# takes a list of items from load_data and maximizes EV
+def objective_function(items):   
+    m = " + ".join("{ev} {pid}".format(ev=p['fpts'], pid=p['id']) for p in items)
+    return "max: " + m + ";\n"
 
-    for item in items:
-        for i in range(len(items)):
-            item['id%d' % i] = float(item['id'] == i)
+# cost constraints
+def cost_constraint(items, max_salary):
+    c = " + ".join("{cost} {pid}".format(cost=p['salary'], pid=p['id']) for p in items)
+    return "cost_constraint: " + c + " <= %s;\n" % max_salary
 
-    constraints = lambda values: (
-                              values['salary'] < 50000, 
-                              values['nItems'] == 8, 
-                              values['PG'] >= 1,
-                              values['PG'] <= 2,
-                              values['SG'] >= 1,
-                              values['SG'] <= 2,
-                              values['SF'] >= 1,
-                              values['SF'] <= 2,
-                              values['PF'] >= 1,
-                              values['PF'] <= 2,
-                              values['PFSFC'] >= 4,
-                              values['PFSFC'] <= 5,
-                              values['PGSGC'] >= 4,
-                              values['PGSGC'] <= 5,
-                             ) + tuple([values['id%d'% i] <= 1 for i in range(len(items))])
+# position constraints
+def position_constraints(items):
+    constraints = StringIO.StringIO()
+    
+    # total players = 8
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in items) + " = 8;\n")
+    
+    # 2 >= pgs >= 1
+    pgs = [p for p in items if p['position'] == 'PG']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pgs) + " >= 1;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pgs) + " <= 2;\n")
 
+    # 2 >= sgs >= 1
+    sgs = [p for p in items if p['position'] == 'SG']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sgs) + " >= 1;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sgs) + " <= 2;\n")
+    
+    # 2 >= sfs >= 1 
+    sfs = [p for p in items if p['position'] == 'SF']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sfs) + " >= 1;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sfs) + " <= 2;\n")
+    
+    # 2 >= pfs >= 1
+    pfs = [p for p in items if p['position'] == 'PF']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pfs) + " >= 1;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pfs) + " <= 2;\n")
+    
+    # 2 >= c >= 1
+    cs = [p for p in items if p['position'] == 'C']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in cs) + " >= 1;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in cs) + " <= 2;\n")
+    
+    # 5 >= pgs+sgs+c >= 4
+    pgsgc = [p for p in items if p['position'] == 'PG' or p['position'] == 'SG' or p['position'] == 'C']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pgsgc) + " >= 4;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in pgsgc) + " <= 5;\n")
+    
+    # 5 >= sfs+pfs+c >= 4
+    sfpfc = [p for p in items if p['position'] == 'SF' or p['position'] == 'PF' or p['position'] == 'C']
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sfpfc) + " >= 4;\n")
+    constraints.write(" + ".join("{pid}".format(pid=p['id']) for p in sfpfc) + " <= 5;\n")
+    
+    return constraints.getvalue()
 
-                                  # we could use lambda-func, e,g.
-                                  # values['mass'] + 4*values['volume'] < 100
-    objective = 'fpts'
-    # we could use lambda-func, e.g. 
-    # objective = lambda val: 5*value['cost'] - 2*value['volume'] - 5*value['mass'] + 3*val['nItems']
-    p = KSP(objective, items, goal = 'max', constraints = constraints) 
-    r = p.solve('glpk', iprint = 0) # requires cvxopt and glpk installed, see http://openopt.org/KSP for other solvers
-    ''' Results for Intel Atom 1.6 GHz:
-    ------------------------- OpenOpt 0.50 -------------------------
-    solver: glpk   problem: unnamed    type: MILP   goal: max
-     iter   objFunVal   log10(maxResidual)   
-        0  0.000e+00               0.70 
-        1  2.739e+01            -100.00 
-    istop: 1000 (optimal)
-    Solver:   Time Elapsed = 0.82   CPU Time Elapsed = 0.82
-    objFunValue: 27.389749 (feasible, MaxResidual = 0)
-    '''
-    print(r.xf) 
+# declares all players to be binary variables
+def all_player_variables(items):
+    variables = ", ".join("{pid}".format(pid=p['id']) for p in items)
+    return "bin %s;\n" % variables
+
+# returns top lineup(s) given a set of projections, salaries, and adjustments
+# fn: DK salary file
+# projections: a dictionary with keys: player names and values: projected FP
+# adjustments: a dictionary with keys: player names 
+def run_optimization(fn, projections, adjustments, num_lineups):
+    results = []
+    old_constraints = []
+    items = load_data(fn, projections, adjustments)
+    p_ids = [p['id'] for p in items]
+    
+    for i in range(num_lineups):
+        lp = StringIO.StringIO()
+        lp.write(objective_function(items))
+        lp.write(cost_constraint(items, 50000))
+        lp.write(position_constraints(items))
+        
+        # write old constraints to prevent getting the same team to get the top N results
+        for c in old_constraints:
+            lp.write(c)
+        
+        lp.write(all_player_variables(items))
+    
+        # SUPPOSEDLY supposed to use StringIO to avoid writing a temp file, but can't figure it out right now
+        # writes a temp file, still works
+        temp_fn = 'templpfile'
+        with open(temp_fn, 'wb') as f:
+            f.write(lp.getvalue())
+        cmd = "lp_solve " + temp_fn
+        val = subprocess.check_output(cmd, shell=True).split('\n')
+        team = []
+        pid_team = []
+        for v in val:
+            temp = v.split()
+            if len(temp) > 0:
+                if temp[0][0] == 'P':
+                    if temp[1] == '1':
+                        team.append(items[p_ids.index(temp[0])]['name'])
+                        pid_team.append(temp[0])
+                elif temp[0][0] == 'V':
+                    obj_func_value = float(v.split(':')[1].rstrip('\r'))
+        r = {'team': team, 
+                        'value': obj_func_value, 
+                        'old_constraints': " + ".join(pid_team) + " <= " + str(len(pid_team)-1) + ";\n"}
+        results.append(r)
+        old_constraints.append(r['old_constraints'])
+    return results

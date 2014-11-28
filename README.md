@@ -1,6 +1,6 @@
 ## Daily pipeline
 
-### Model
+### Model (outdated - new readme to come)
 
 1. In `model.ipynb` run the code block containing `data_getters.download_gamelog_jsons(2014,'boxscores/2014',start_game=X, end_game=1230)` where X is the first game that has not already been downloaded. The program will automatically stop once the last game that is available is downloaded.
 
