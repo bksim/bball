@@ -25,7 +25,10 @@ def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_rat
 			writer = csv.writer(f)
 			for k, v in predictions.iteritems():
 				writer.writerow([k, v['predicted_fp'], v['predicted_sd']])
-		return predictions
+		predictions_modified = {}
+		for k in predictions:
+			predictions_modified[k] = predictions[k]['predicted_fp']
+		return predictions_modified
 
 # finish this function by finishing the lookup table
 def calculate_pace(team, vegas_lines, def_ratings, off_ratings):
@@ -73,6 +76,8 @@ def calculate_pace(team, vegas_lines, def_ratings, off_ratings):
 		if team == lookup[away]:
 			pts_predicted = float(vegas_lines[k][0] + vegas_lines[k][1])/2.0
 			avg_rating = float(off_ratings[lookup[away]] + def_ratings[lookup[home]])/2.0
+			print pts_predicted
+			print avg_rating
 			return pts_predicted / (avg_rating / 100.0)
 		elif team == lookup[home]:
 			pts_predicted = float(vegas_lines[k][0]) - float(vegas_lines[k][0] + vegas_lines[k][1])/2.0

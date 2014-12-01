@@ -117,7 +117,13 @@ class Player:
         #cant just multiply avg(fppp)*avg(minutes)*pace/48 because could have correlation
         #E(XY) != E(X)E(Y) in general
         fpppmin = np.multiply(fppp, minutes)
-        predicted_fp = np.mean(fpppmin)*pace/48.0
+        #print self.info['PLAYER_NAME']
+        #print pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1)
+        if len(fpppmin) > 0:
+            predicted_fp = float(pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1))*pace/48.0
+        else:
+            predicted_fp = 0.0
+        #predicted_fp = np.mean(fpppmin)*pace/48.0
         predicted_sd = np.std(fpppmin)*pace/48.0
 
         predicted_fp = predicted_fp if not np.isnan(predicted_fp) else 0.0
