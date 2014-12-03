@@ -22,6 +22,7 @@ def load_data(fn, projections, adjustments):
                         'C': 1 if row[0] == 'C' else 0,
                         'position': row[0],
                         'name': row[1],
+                        'game': row[3],
                         'salary': int(row[2]),
                         'fpts': float(row[4]) if row[1] not in adjustments else adjustments[row[1]]
                         }
@@ -89,6 +90,22 @@ def position_constraints(items):
     
     return constraints.getvalue()
 
+# writes other constraints
+def other_constraints(items, constraints):
+    c = StringIO.StringIO()
+
+    if 'max_players_per_game' in constraints:
+        games = {}
+        for p in items:
+            if p['game'] not in games:
+                games[p['game']] = [p['id']]
+            else:
+                games[p['game']] = games[p['game']] + [p['id']]
+        for game in games:
+            c.write(" + ".join(games[game]) + " <= " + str(constraints['max_players_per_game']) + ";\n")
+
+    return c.getvalue()
+
 # declares all players to be binary variables
 def all_player_variables(items):
     variables = ", ".join("{pid}".format(pid=p['id']) for p in items)
@@ -98,7 +115,8 @@ def all_player_variables(items):
 # fn: DK salary file
 # projections: a dictionary with keys: player names and values: projected FP
 # adjustments: a dictionary with keys: player names 
-def run_optimization(fn, projections, adjustments, num_lineups):
+# constraints: a dictionary with other constraints
+def run_optimization(fn, projections, adjustments, num_lineups, constraints):
     results = []
     old_constraints = []
     items = load_data(fn, projections, adjustments)
@@ -109,6 +127,7 @@ def run_optimization(fn, projections, adjustments, num_lineups):
         lp.write(objective_function(items))
         lp.write(cost_constraint(items, 50000))
         lp.write(position_constraints(items))
+        lp.write(other_constraints(items, constraints))
         
         # write old constraints to prevent getting the same team to get the top N results
         for c in old_constraints:

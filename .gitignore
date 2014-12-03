@@ -4,3 +4,7 @@ boxscores_advanced/
 templpfile
 lp_solve_5.5.2.0_exe_win64/
 optimization_testing/
+model_predictions/
+vegas_lines/
+draftkings_contest_data/
+draftkings_data/

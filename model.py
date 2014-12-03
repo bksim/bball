@@ -76,8 +76,6 @@ def calculate_pace(team, vegas_lines, def_ratings, off_ratings):
 		if team == lookup[away]:
 			pts_predicted = float(vegas_lines[k][0] + vegas_lines[k][1])/2.0
 			avg_rating = float(off_ratings[lookup[away]] + def_ratings[lookup[home]])/2.0
-			print pts_predicted
-			print avg_rating
 			return pts_predicted / (avg_rating / 100.0)
 		elif team == lookup[home]:
 			pts_predicted = float(vegas_lines[k][0]) - float(vegas_lines[k][0] + vegas_lines[k][1])/2.0

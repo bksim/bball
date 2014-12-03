@@ -74,7 +74,7 @@ class Player:
     """ currently uses span-6 EWMA but we can change this """
     def predict(self, stat):
         # note: if a player is missing games, it still calculates weights (see is_na flag in documentation)
-        return float(pd.stats.moments.ewma(pd.Series(self.info[stat]), span=6).tail(1))
+        return float(pd.stats.moments.ewma(pd.Series(self.info[stat]), span=10).tail(1))
     
     ####################### POSSESSIONS MODEL CODE ########################
     """
@@ -120,7 +120,7 @@ class Player:
         #print self.info['PLAYER_NAME']
         #print pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1)
         if len(fpppmin) > 0:
-            predicted_fp = float(pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1))*pace/48.0
+            predicted_fp = float(pd.stats.moments.ewma(pd.Series(fpppmin), span=10).tail(1))*pace/48.0
         else:
             predicted_fp = 0.0
         #predicted_fp = np.mean(fpppmin)*pace/48.0
