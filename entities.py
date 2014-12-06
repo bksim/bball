@@ -99,7 +99,7 @@ class Player:
         minutes = [(float(m.split(':')[0]) + float(m.split(':')[1])/60.0) for m in self.info['MIN'] if m is not None]
         return np.average(minutes), np.std(minutes), minutes
 
-    def possessions_model(self, pace):
+    def possessions_model(self, pace, minutes_adj):
         num_iters = 300000
         results = []
         average_fppp, std_fppp, fppp = self.fppp_stats()
@@ -116,7 +116,11 @@ class Player:
         #assumes a player will play same minutes as his average on season, can change this for injuries, etc
         #cant just multiply avg(fppp)*avg(minutes)*pace/48 because could have correlation
         #E(XY) != E(X)E(Y) in general
-        fpppmin = np.multiply(fppp, minutes)
+        common_name = list(set(self.get_aliases().values()) & set(minutes_adj.keys()))
+        if len(common_name) >= 1:
+            fpppmin = np.array(fppp)*minutes_adj[common_name[0]]
+        else:
+            fpppmin = np.multiply(fppp, minutes)
         #print self.info['PLAYER_NAME']
         #print pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1)
         if len(fpppmin) > 0:
@@ -179,6 +183,21 @@ class Player:
                         return None
                 fp += v * w
             return fp if not np.isnan(fp) else 0.0
+        elif site == "Victiv":
+            fp = 0
+            weights = {'PTS': 1.0, 'REB': 1.25, 'AST': 1.25, 'STL': 2.0, 'BLK': 2.0, 'TO': -0.5}
+            for s, w in weights.iteritems():
+                if game_number == 'predict':
+                    v = self.predict(s)
+                else:
+                    if game_number > len(self.info[s]):
+                        print 'Invalid game number'
+                        return False
+                    v = self.info[s][game_number]
+                    if v == None:
+                        return None
+                fp += v*w
+            return fp if not np.isnan(fp) else 0.0
         else:
             return "Not yet supported"
 
@@ -202,6 +221,16 @@ class Player:
     def get_name(self):
         return self.info['PLAYER_NAME'][-1]
     
+    def get_aliases(self):
+        aliases = {}
+        aliases['NBA'] = self.info['PLAYER_NAME'][-1]
+        # exceptions
+        if aliases['NBA'] == 'KJ McDaniels':
+            aliases['DraftKings'] = 'K.J. McDaniels'
+        else:
+            aliases['DraftKings'] = aliases['NBA']
+        return aliases
+
     def __repr__(self):
         return self.get_name()
     

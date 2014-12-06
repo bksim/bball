@@ -6,11 +6,16 @@ from entities import Player, Game
 import numpy as np
 
 # write predictions to excel sheet
-def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_ratings, excel_fn, dfs_site):
+def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_ratings, excel_fn, dfs_site, minutes_adj = None):
+	# key: NBA version, value: DK version
 	predictions = {}
 	if model_type == "ema":
 		for p in player_data:
-			predictions[p.get_name()] = p.calculate_fp(game_number="predict", site=dfs_site)
+			if p.get_aliases()['DraftKings'] != p.get_aliases()['NBA']:
+				predictions[p.get_aliases()['DraftKings']] = p.calculate_fp(game_number="predict", site=dfs_site)
+				predictions[p.get_aliases()['NBA']] = p.calculate_fp(game_number="predict", site=dfs_site)
+			else:
+				predictions[p.get_name()] = p.calculate_fp(game_number="predict", site=dfs_site)
 		with open(excel_fn, 'wb') as f:
 			writer = csv.writer(f)
 			for k, v in predictions.iteritems():
@@ -20,11 +25,18 @@ def write_predictions(player_data, model_type, vegas_lines, def_ratings, off_rat
 		assert dfs_site == "DraftKings"
 		for p in player_data:
 			pace = calculate_pace(p.get_info()['TEAM_ABBREVIATION'][-1], vegas_lines, def_ratings, off_ratings)
-			predictions[p.get_name()] = p.possessions_model(pace)
+
+			if p.get_aliases()['DraftKings'] != p.get_aliases()['NBA']:
+				predictions[p.get_aliases()['DraftKings']] = p.possessions_model(pace, minutes_adj)
+				predictions[p.get_aliases()['NBA']] = p.possessions_model(pace, minutes_adj)
+			else:
+				predictions[p.get_name()] = p.possessions_model(pace, minutes_adj)
+		
 		with open(excel_fn, 'wb') as f:
 			writer = csv.writer(f)
 			for k, v in predictions.iteritems():
 				writer.writerow([k, v['predicted_fp'], v['predicted_sd']])
+
 		predictions_modified = {}
 		for k in predictions:
 			predictions_modified[k] = predictions[k]['predicted_fp']
