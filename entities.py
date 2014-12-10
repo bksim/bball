@@ -227,6 +227,8 @@ class Player:
         # exceptions
         if aliases['NBA'] == 'KJ McDaniels':
             aliases['DraftKings'] = 'K.J. McDaniels'
+        if aliases['NBA'] == 'JJ Hickson':
+            aliases['DraftKings'] = 'J.J. Hickson'
         else:
             aliases['DraftKings'] = aliases['NBA']
         return aliases

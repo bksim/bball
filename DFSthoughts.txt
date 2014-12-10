@@ -1,0 +1,177 @@
+12/8/2014:
+
+Tonight Brook Lopez, Cousins, and Mo Williams are out. Javale McGee is probably out, and Joe Johnson/Shabazz/Faried/Burks/Isaiah are out. 
+
+In the minutes adjuster, we adjust Mirza to 39 minutes (startin), Stuckey to 27 minutes, and JJ Hickson to 22 minutes. 
+
+The optimizer gives us a couple we like, the best lineup, 3rd best, and 4th best. The second best has Mo Speights over Kris Humphries as compared to the first lineup. That's alright, but I like Humphries as a starter tonight and he's been on a hot streak with the Wizards at home tonight.
+
+270.08362189 ['Kyle Lowry', 'DeAndre Jordan', 'Klay Thompson', 'Draymond Green', 'Corey Brewer', 'Greivis Vasquez', 'Kris Humphries', 'Rasual Butler']
+
+
+269.93409876 ['Blake Griffin', 'DeAndre Jordan', 'Klay Thompson', 'Draymond Green', 'Corey Brewer', 'Greivis Vasquez', 'Zach LaVine', 'Rasual Butler']
+
+
+268.9768884 ['Eric Bledsoe', 'DeAndre Jordan', 'Klay Thompson', 'Draymond Green', 'Corey Brewer', 'Amir Johnson', 'Greivis Vasquez', 'Zach LaVine']
+
+Of these three, we'd like to submit two with equal cash weight in 50/50's. Of the latter two, we have Blake/Butler vs Bledsoe/Johnson. Bledsoe seems like a better bet than Blake with Isaiah out, but this is a tossup. We went with the first lineup (Lowry) and the third (Bledsoe). However, we swapped out Brewer for Mirza Teletovic in both lineups (only $100 off in price). The model likes Brewer over Mirza, but we think Mirza will be super meta today.
+
+Our core of DeAndre/Klay/Green/Mirza/Vasquez feels strong. Draymond feels strong. Rasual Butler has been on fire, playing a weak team (BOS) in Washington. DK slow to adjust price for Vasquez, who is playing lots of minutes for DeRozan. The side picks are Lowry/Humphris/Butler vs Bledsoe/Amir/LaVine. I like LaVine a lot, but Humphries should be solid. First lineup feels lower variance to me. All our players have high percentages of making 5x according to Engleman tonight. We'll see what happens.
+
+Final lineups ($104 wagered, approximately half half)
+
+['Kyle Lowry', 'DeAndre Jordan', 'Klay Thompson', 'Draymond Green', 'Mirza Teletovic', 'Greivis Vasquez', 'Kris Humphries', 'Rasual Butler']
+
+Kyle Lowry: 47.76		Std: 9.54	 ScaledStd: 0.20
+DeAndre Jordan: 35.77		Std: 10.31	 ScaledStd: 0.29
+Klay Thompson: 38.76		Std: 8.53	 ScaledStd: 0.22
+Draymond Green: 37.50		Std: 11.05	 ScaledStd: 0.29
+Mirza Teletovic: 27.95		Std: 11.66	 ScaledStd: 0.42
+Greivis Vasquez: 28.87		Std: 8.16	 ScaledStd: 0.28
+Kris Humphries: 24.69		Std: 10.66	 ScaledStd: 0.43
+Rasual Butler: 25.08		Std: 10.31	 ScaledStd: 0.41
+Total: 266.388201564
+Std of lineup: 28.5430426791
+
+
+['Eric Bledsoe', 'DeAndre Jordan', 'Klay Thompson', 'Draymond Green', 'Mirza Teletovic', 'Amir Johnson', 'Greivis Vasquez', 'Zach LaVine']
+
+Eric Bledsoe: 41.34		Std: 11.43	 ScaledStd: 0.28
+DeAndre Jordan: 35.77		Std: 10.31	 ScaledStd: 0.29
+Klay Thompson: 38.76		Std: 8.53	 ScaledStd: 0.22
+Draymond Green: 37.50		Std: 11.05	 ScaledStd: 0.29
+Mirza Teletovic: 27.95		Std: 11.66	 ScaledStd: 0.42
+Amir Johnson: 27.21		Std: 9.63	 ScaledStd: 0.35
+Greivis Vasquez: 28.87		Std: 8.16	 ScaledStd: 0.28
+Zach LaVine: 27.89		Std: 12.39	 ScaledStd: 0.44
+Total: 265.281468073
+Std of lineup: 29.6733156634
+
+
+Results (cashed $153.90):
+
+Kyle Lowry: 37.75		Std: 9.33	 ScaledStd: 0.25
+DeAndre Jordan: 40.50		Std: 10.24	 ScaledStd: 0.25
+Klay Thompson: 27.75		Std: 8.50	 ScaledStd: 0.31
+Draymond Green: 37.00		Std: 10.83	 ScaledStd: 0.29
+Mirza Teletovic: 21.50		Std: 11.35	 ScaledStd: 0.53
+Greivis Vasquez: 25.75		Std: 8.10	 ScaledStd: 0.31
+Kris Humphries: 32.75		Std: 10.85	 ScaledStd: 0.33
+Rasual Butler: 12.25		Std: 10.08	 ScaledStd: 0.82
+Total: 235.25
+
+Eric Bledsoe: 75.75		Std: 14.21	 ScaledStd: 0.19
+DeAndre Jordan: 40.50		Std: 10.24	 ScaledStd: 0.25
+Klay Thompson: 27.75		Std: 8.50	 ScaledStd: 0.31
+Draymond Green: 37.00		Std: 10.83	 ScaledStd: 0.29
+Mirza Teletovic: 21.50		Std: 11.35	 ScaledStd: 0.53
+Amir Johnson: 14.00		Std: 9.57	 ScaledStd: 0.68
+Greivis Vasquez: 25.75		Std: 8.10	 ScaledStd: 0.31
+Zach LaVine: 29.00		Std: 12.35	 ScaledStd: 0.43
+Total: 271.25
+
+
+Lots of overtimes tonight (OT for toronto-denver, double OT for boston-washington, OT for clips-suns). Double OT for boston-washington hurt, since we only had humphries in one lineup and rasual butler didn't play (bench player).
+
+Core: DeAndre/Klay/Green/Mirza/Vasquez was decent. DeAndre was a beast. Klay was pretty bad, but made up for by Draymond Green. Mirza was bad also in a Cleveland blowout. Oh well. Corey Brewer should have been the play instead, but not killing ourselves for that one since Mirza was pretty meta pick (~50%). Vasquez was solid as always with 5x.
+
+Side picks:
+OT for toronto saved Lowry's score..got him to almost 4x, but still a stinker from lowry. Kris Humphries was great, Rasual wasn't. For those reasons first lineup cashed in around 1/3 to 1/2 of the contests.
+
+Bledsoe was amazing. Saved the second lineup. LaVine was great as well, saving us from Amir Johnson's stinkbomb.
+
+Overall:
+Not bad, cashed around 50 bucks. Super close to cashing everything (1-2 points off with our first lineup). Missed out on a lot of points from Boston-Washington game without exposure to Wall / Boston bench, but oh well.
+
+=================================================
+
+12/9/2014:
+
+{u'Portland@Detroit': [196.5, 7.5], u'Dallas@Memphis': [205.0, -3.0], u'San Antonio@Utah': [195.0, 9.0], u'Milwaukee@Oklahoma City': [200.0, -9.5], u'Sacramento@L.A. Lakers': [205.5, -3.0], u'Toronto@Cleveland': [206.0, -6.0], u'Miami@Phoenix': [202.5, -4.5], u'New York@New Orleans': [195.0, -7.0]}
+
+Tonight I have the following adjustments:
+
+minutes_adjustments = {'Greivis Vasquez': 31.0,
+                       'Eric Bledsoe': 36.0,
+                       'Cory Joseph': 33.0,
+                       'Ronnie Price': 25.,
+                       'Ed Davis': 30.0,
+                       'Gerald Green': 35.0,
+                       'Marcus Morris': 25.,
+                       'Mario Chalmers': 31.
+                       }
+
+
+Top two model projections are:
+261.27128862 ['Tim Duncan', 'Eric Bledsoe', 'Rudy Gay', 'Tyson Chandler', 'Greivis Vasquez', 'Gerald Green', 'Cory Joseph', 'Ed Davis']
+
+260.75224092 ['Tim Duncan', 'Eric Bledsoe', 'Rudy Gay', 'Tyson Chandler', 'Jabari Parker', 'Gerald Green', 'Cory Joseph', 'Ed Davis']
+
+Pool of players in top 100 lineups:
+(100, 'Gerald Green')
+(96, 'Cory Joseph')
+(89, 'Tyson Chandler')
+(89, 'Ed Davis')
+(73, 'Rudy Gay')
+(56, 'Eric Bledsoe')
+(26, 'Josh Smith')
+(24, 'Marc Gasol')
+(22, 'Serge Ibaka')
+(21, 'Tristan Thompson')
+(21, 'Jeremy Lamb')
+(19, 'Dwyane Wade')
+(17, 'Jabari Parker')
+(16, 'Greivis Vasquez')
+(15, 'Trey Burke')
+(15, 'Tim Duncan')
+(15, 'LaMarcus Aldridge')
+(13, 'Chris Bosh')	
+(9, 'Jon Leuer')
+(8, 'LeBron James')
+(7, 'Gordon Hayward')
+(6, 'Russell Westbrook')
+(6, 'Mario Chalmers')
+(4, 'Brandon Knight')
+(3, 'Markieff Morris')
+(3, 'Dirk Nowitzki')
+(2, 'Tayshaun Prince')
+(2, 'Patrick Patterson')
+(2, 'Monta Ellis')
+(2, 'Mike Conley')
+(2, 'Kyle Lowry')
+(2, 'J.J. Barea')
+(2, 'Derrick Favors')
+(2, 'Danny Green')
+(2, "Amar'e Stoudemire")
+(1, 'Zaza Pachulia')
+(1, 'Ryan Anderson')
+(1, 'Kendrick Perkins')
+(1, 'Jordan Hill')
+(1, 'Jonas Valanciunas')
+(1, 'Goran Dragic')
+(1, 'Darren Collison')
+(1, 'Damian Lillard')
+(1, 'Andre Drummond')
+
+
+Initial thoughts:
+Timmy has been solid esp not on second night of back-to-back. Bledsoe came off a huge 75+ point game in OT, might be tired but he has been fine in back to backs so far this season. I adjusted him down to 36 minutes, but the model still loves him (has loved him for a couple nights in a row now). Should be a competitive game in Phoenix so I'm willing to roll the dice. Gay came off a great game as well, maybe some back-to-back risk, but he plays the Lakers in LA in what should be a nice matchup and a competitive game as well. Chandler and Jabari are pretty solid plays normally. Jabari has been getting a lot of minutes from Jason Kidd, which is nice. Gerald Green feels like a great play - bench will be run a bit more after the OT game against the Clippers that the Suns had last night, and Green has been lighting it up without Isaiah Thomas in the picture. Cory Joseph gets the start again with Tony Parker out, and even though he's now much more expensive, with those minutes he feels like he can put up the necessary numbers to justify his 4.7k price tag. Ed Davis should get the start again against Jason Thompson (SAC), easier matchup than the Brow (which he faced in his first start last game) and he put up decent numbers. He should see 30 minutes again and produce enough to justify his fairly cheap 4.1k price tag.
+
+Vasquez has been solid, but Jabari feels like a slightly more meta play (Vasquez only had in the mid teen ownership last night) with more upside.
+
+This analysis was done before consulting reddit for niche/meta picks or for injury reports (done early in the morning), so this may change as the day goes on.
+
+Wagered:
+57($1) = $57
+260.75224092 ['Tim Duncan', 'Eric Bledsoe', 'Rudy Gay', 'Tyson Chandler', 'Jabari Parker', 'Gerald Green', 'Cory Joseph', 'Ed Davis']
+
+44($1) + 4($3) = $56
+261.39148089 ['LaMarcus Aldridge', 'Josh Smith', 'Rudy Gay', 'Tyson Chandler', 'Gerald Green', 'Cory Joseph', 'Ed Davis', 'Jeremy Lamb']
+
+core:
+Rudy Gay, Tyson Chandler, Gerald Green, Ed Davis, Cory Joseph
+
+side:
+1) Duncan, Bledsoe, Jabari
+2) LMA, Josh Smith, Jeremy Lamb
+
