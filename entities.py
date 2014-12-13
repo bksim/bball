@@ -119,14 +119,15 @@ class Player:
         common_name = list(set(self.get_aliases().values()) & set(minutes_adj.keys()))
         if len(common_name) >= 1:
             fpppmin = np.array(fppp)*minutes_adj[common_name[0]]
+            predicted_fp = np.mean(fpppmin) * pace/48.0
         else:
-            fpppmin = np.multiply(fppp, minutes)
-        #print self.info['PLAYER_NAME']
-        #print pd.stats.moments.ewma(pd.Series(fpppmin), span=6).tail(1)
-        if len(fpppmin) > 0:
-            predicted_fp = float(pd.stats.moments.ewma(pd.Series(fpppmin), span=10).tail(1))*pace/48.0
-        else:
-            predicted_fp = 0.0
+            #fpppmin = np.multiply(fppp, minutes)
+            predicted_fp = np.mean(fppp) * float(pd.stats.moments.ewma(pd.Series(minutes), span=10).tail(1)) * pace/48.0
+        
+        #if len(fpppmin) > 0:
+        #    predicted_fp = float(pd.stats.moments.ewma(pd.Series(fpppmin), span=10).tail(1))*pace/48.0
+        #else:
+        #    predicted_fp = 0.0
         #predicted_fp = np.mean(fpppmin)*pace/48.0
         predicted_sd = np.std(fpppmin)*pace/48.0
 
